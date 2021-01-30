@@ -29,21 +29,24 @@ public class EmployeeController {
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
-    @PutMapping("/employee/{id}")
+    @PutMapping("/employees/{id}")
     Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
         return repository.findById(id)
+                // Optional.map(Function) -> return 값을 Optional로 감싼다.
+                // 따라서 findById의 결과가 null이 아니면 repository.save의 반환 값을 Optional로 감싸서 리턴함.
                 .map(employee -> {
                     employee.setName(newEmployee.getName());
                     employee.setRole(newEmployee.getRole());
                     return repository.save(employee);
                 })
-                .orElseGet(() ->{
-                   newEmployee.setId(id);
+                .orElseGet(() -> {
+                    newEmployee.setId(id);
                     return repository.save(newEmployee);
                 });
     }
 
-
-
-
+    @DeleteMapping("/employees/{id}")
+    void deleteEmployee(@PathVariable Long id) {
+        repository.deleteById(id);
+    }
 }
