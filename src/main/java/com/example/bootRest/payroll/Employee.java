@@ -15,11 +15,23 @@ public class Employee {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String role;
 
-    public Employee(String name, String role) {
-        this.name = name;
+    public Employee(String firstName, String lastName, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.role = role;
+    }
+
+    public String getName() {
+        return firstName + " " + lastName;
+    }
+
+    public void setName(String name) {
+        String[] tmp = name.split(" ");
+        this.firstName = tmp[0];
+        this.lastName = tmp[1];
     }
 }
